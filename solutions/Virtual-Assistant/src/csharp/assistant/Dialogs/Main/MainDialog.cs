@@ -68,99 +68,104 @@ namespace VirtualAssistant
         {
             var parameters = await _parametersAccessor.GetAsync(dc.Context, () => new Dictionary<string, object>());
 
-            // No dialog is currently on the stack and we haven't responded to the user
-            // Check dispatch result
-            var dispatchResult = await _services.DispatchRecognizer.RecognizeAsync<Dispatch>(dc.Context, CancellationToken.None);
-            var intent = dispatchResult.TopIntent().intent;
+            bool handled = await HandleCommands(dc);
 
-            switch (intent)
+            if (!handled)
             {
-                case Dispatch.Intent.l_General:
-                    {
-                        // If dispatch result is general luis model
-                        var luisService = _services.LuisServices["general"];
-                        var luisResult = await luisService.RecognizeAsync<General>(dc.Context, CancellationToken.None);
-                        var luisIntent = luisResult?.TopIntent().intent;
+                // No dialog is currently on the stack and we haven't responded to the user
+                // Check dispatch result
+                var dispatchResult = await _services.DispatchRecognizer.RecognizeAsync<Dispatch>(dc.Context, CancellationToken.None);
+                var intent = dispatchResult.TopIntent().intent;
 
-                        // switch on general intents
-                        if (luisResult.TopIntent().score > 0.5)
+                switch (intent)
+                {
+                    case Dispatch.Intent.l_General:
                         {
-                            switch (luisIntent)
+                            // If dispatch result is general luis model
+                            var luisService = _services.LuisServices["general"];
+                            var luisResult = await luisService.RecognizeAsync<General>(dc.Context, CancellationToken.None);
+                            var luisIntent = luisResult?.TopIntent().intent;
+
+                            // switch on general intents
+                            if (luisResult.TopIntent().score > 0.5)
                             {
-                                case General.Intent.Greeting:
-                                    {
-                                        // send greeting response
-                                        await _responder.ReplyWith(dc.Context, MainResponses.Greeting);
-                                        break;
-                                    }
+                                switch (luisIntent)
+                                {
+                                    case General.Intent.Greeting:
+                                        {
+                                            // send greeting response
+                                            await _responder.ReplyWith(dc.Context, MainResponses.Greeting);
+                                            break;
+                                        }
 
-                                case General.Intent.Help:
-                                    {
-                                        // send help response
-                                        await _responder.ReplyWith(dc.Context, MainResponses.Help);
-                                        break;
-                                    }
+                                    case General.Intent.Help:
+                                        {
+                                            // send help response
+                                            await _responder.ReplyWith(dc.Context, MainResponses.Help);
+                                            break;
+                                        }
 
-                                case General.Intent.Cancel:
-                                    {
-                                        // if this was triggered, then there is no active dialog
-                                        await _responder.ReplyWith(dc.Context, MainResponses.NoActiveDialog);
-                                        break;
-                                    }
+                                    case General.Intent.Cancel:
+                                        {
+                                            // if this was triggered, then there is no active dialog
+                                            await _responder.ReplyWith(dc.Context, MainResponses.NoActiveDialog);
+                                            break;
+                                        }
 
-                                case General.Intent.Escalate:
-                                    {
-                                        // start escalate dialog
-                                        await dc.BeginDialogAsync(nameof(EscalateDialog));
-                                        break;
-                                    }
+                                    case General.Intent.Escalate:
+                                        {
+                                            // start escalate dialog
+                                            await dc.BeginDialogAsync(nameof(EscalateDialog));
+                                            break;
+                                        }
 
-                                case General.Intent.Logout:
-                                    {
-                                        await LogoutAsync(dc);
-                                        break;
-                                    }
+                                    case General.Intent.Logout:
+                                        {
+                                            await LogoutAsync(dc);
+                                            break;
+                                        }
 
-                                case General.Intent.None:
-                                default:
-                                    {
-                                        // No intent was identified, send confused message
-                                        await _responder.ReplyWith(dc.Context, MainResponses.Confused);
-                                        break;
-                                    }
+                                    case General.Intent.None:
+                                    default:
+                                        {
+                                            // No intent was identified, send confused message
+                                            await _responder.ReplyWith(dc.Context, MainResponses.Confused);
+                                            break;
+                                        }
+                                }
                             }
+
+                            break;
                         }
 
-                        break;
-                    }
-
-                case Dispatch.Intent.l_Calendar:
-                case Dispatch.Intent.l_Email:
-                case Dispatch.Intent.l_ToDo:
-                case Dispatch.Intent.l_PointOfInterest:
-                    {
-                        var matchedSkill = _skillRouter.IdentifyRegisteredSkill(intent.ToString());
-
-                        await RouteToSkillAsync(dc, new SkillDialogOptions()
+                    case Dispatch.Intent.l_Calendar:
+                    case Dispatch.Intent.l_Email:
+                    case Dispatch.Intent.l_ToDo:
+                    case Dispatch.Intent.l_PointOfInterest:
                         {
-                            SkillDefinition = matchedSkill,
-                            Parameters = parameters,
-                        });
+                            var matchedSkill = _skillRouter.IdentifyRegisteredSkill(intent.ToString());
 
-                        break;
-                    }
+                            await RouteToSkillAsync(dc, new SkillDialogOptions()
+                            {
+                                SkillDefinition = matchedSkill,
+                                Parameters = parameters,
+                            });
 
-                case Dispatch.Intent.q_FAQ:
-                    {
-                        var qnaService = _services.QnAServices["faq"];
-                        var answers = await qnaService.GetAnswersAsync(dc.Context);
-                        if (answers != null && answers.Count() > 0)
-                        {
-                            await dc.Context.SendActivityAsync(answers[0].Answer);
+                            break;
                         }
 
-                        break;
-                    }
+                    case Dispatch.Intent.q_FAQ:
+                        {
+                            var qnaService = _services.QnAServices["faq"];
+                            var answers = await qnaService.GetAnswersAsync(dc.Context);
+                            if (answers != null && answers.Count() > 0)
+                            {
+                                await dc.Context.SendActivityAsync(answers[0].Answer);
+                            }
+
+                            break;
+                        }
+                }
             }
         }
 
@@ -266,6 +271,83 @@ namespace VirtualAssistant
                     }
                 }
             }
+        }
+
+        private async Task<bool> HandleCommands(DialogContext dc)
+        {
+            var handled = false;
+            var command = dc.Context.Activity.Text;
+            var response = dc.Context.Activity.CreateReply();
+
+            switch (command)
+            {
+                case "change radio station to 99.7":
+                case "将收音机调到99.7 FM":
+                    {
+                        response.Type = ActivityTypes.Event;
+                        response.Name = "TuneRadio";
+                        response.Value = "99.7 FM";
+                        await dc.Context.SendActivityAsync(response);
+
+                        handled = true;
+                        break;
+                    }
+
+                case "turn off cruise control":
+                case "打开巡航控制器":
+                case "关闭巡航控制器":
+                    {
+                        response.Type = ActivityTypes.Event;
+                        response.Name = "ToggleCruiseControl";
+                        await dc.Context.SendActivityAsync(response);
+
+                        handled = true;
+                        break;
+                    }
+
+                case "change temperature to 23 degrees":
+                case "将温度设定为23度":
+                case "将温度设定为二十三度":
+                    {
+                        response.Type = ActivityTypes.Event;
+                        response.Name = "ChangeTemperature";
+                        response.Value = "23";
+                        await dc.Context.SendActivityAsync(response);
+
+                        handled = true;
+                        break;
+                    }
+
+                case "play the song robot rock by daft punk":
+                    {
+                        response.Type = ActivityTypes.Event;
+                        response.Name = "PlayMusic";
+                        response.Value = "robot rock - daft punk";
+                        await dc.Context.SendActivityAsync(response);
+
+                        handled = true;
+                        break;
+                    }
+
+                case "播放周杰伦的歌曲彩虹":
+                    {
+                        response.Type = ActivityTypes.Event;
+                        response.Name = "PlayMusic";
+                        response.Value = "彩虹 - 周杰伦";
+                        await dc.Context.SendActivityAsync(response);
+
+                        handled = true;
+                        break;
+                    }
+            }
+
+            if (handled)
+            {
+                await _responder.ReplyWith(dc.Context, MainResponses.Done);
+                await CompleteAsync(dc);
+            }
+
+            return handled;
         }
 
         private async Task RouteToSkillAsync(DialogContext dc, SkillDialogOptions options)

@@ -21,6 +21,7 @@ namespace VirtualAssistant
         public const string Help = "help";
         public const string Intro = "intro";
         public const string NoActiveDialog = "noActiveDialog";
+        public const string Done = "done";
 
         private static LanguageTemplateDictionary _responseTemplates = new LanguageTemplateDictionary
         {
@@ -33,6 +34,7 @@ namespace VirtualAssistant
                 { Greeting, (context, data) => SendAcceptingInputReply(context, MainStrings.GREETING) },
                 { Help, (context, data) => SendHelpCard(context, data) },
                 { Intro, (context, data) => SendIntroCard(context, data) },
+                { Done, (context, data) => MainStrings.DONE },
             },
             ["en"] = new TemplateIdMap { },
             ["fr"] = new TemplateIdMap { },
