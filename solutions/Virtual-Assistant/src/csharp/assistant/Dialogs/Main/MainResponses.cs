@@ -22,6 +22,7 @@ namespace VirtualAssistant
         public const string Intro = "intro";
         public const string NoActiveDialog = "noActiveDialog";
         public const string Done = "done";
+        public const string Qna = "qna";
 
         private static LanguageTemplateDictionary _responseTemplates = new LanguageTemplateDictionary
         {
@@ -35,6 +36,7 @@ namespace VirtualAssistant
                 { Help, (context, data) => SendHelpCard(context, data) },
                 { Intro, (context, data) => SendIntroCard(context, data) },
                 { Done, (context, data) => MainStrings.DONE },
+                { Qna, (context, data) => SendQnaCard(context, data) },
             },
             ["en"] = new TemplateIdMap { },
             ["fr"] = new TemplateIdMap { },
@@ -84,6 +86,23 @@ namespace VirtualAssistant
                 new CardAction(type: ActionTypes.ImBack, title: MainStrings.POI_SUGGESTEDACTION),
             },
             };
+            return response;
+        }
+
+        public static IMessageActivity SendQnaCard(ITurnContext turnContext, dynamic data)
+        {
+            var response = turnContext.Activity.CreateReply();
+            var card = JsonConvert.DeserializeObject<ThumbnailCard>((string)data);
+
+            response.Attachments = new List<Attachment>
+            {
+                card.ToAttachment(),
+            };
+
+            response.Speak = card.Title != null ? $"{card.Title} " : string.Empty;
+            response.Speak += card.Subtitle != null ? $"{card.Subtitle} " : string.Empty;
+            response.Speak += card.Text != null ? $"{card.Text} " : string.Empty;
+
             return response;
         }
 
