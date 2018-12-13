@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
-using System.IO;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.TemplateManager;
 using Microsoft.Bot.Schema;
@@ -93,6 +92,14 @@ namespace VirtualAssistant
         {
             var response = turnContext.Activity.CreateReply();
             var card = JsonConvert.DeserializeObject<ThumbnailCard>((string)data);
+
+            if (card == null)
+            {
+                card = new ThumbnailCard()
+                {
+                    Text = data,
+                };
+            }
 
             response.Attachments = new List<Attachment>
             {
