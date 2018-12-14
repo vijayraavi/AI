@@ -88,27 +88,27 @@ namespace VirtualAssistant
             return response;
         }
 
-        public static IMessageActivity SendQnaCard(ITurnContext turnContext, dynamic data)
+        public static IMessageActivity SendQnaCard(ITurnContext turnContext, dynamic answer)
         {
             var response = turnContext.Activity.CreateReply();
-            var card = JsonConvert.DeserializeObject<ThumbnailCard>((string)data);
 
-            if (card == null)
+            try
             {
-                card = new ThumbnailCard()
+                ThumbnailCard card = JsonConvert.DeserializeObject<ThumbnailCard>(answer);
+
+                response.Attachments = new List<Attachment>
                 {
-                    Text = data,
+                    card.ToAttachment(),
                 };
+
+                response.Speak = card.Title != null ? $"{card.Title} " : string.Empty;
+                response.Speak += card.Subtitle != null ? $"{card.Subtitle} " : string.Empty;
+                response.Speak += card.Text != null ? $"{card.Text} " : string.Empty;
             }
-
-            response.Attachments = new List<Attachment>
+            catch (JsonException)
             {
-                card.ToAttachment(),
-            };
-
-            response.Speak = card.Title != null ? $"{card.Title} " : string.Empty;
-            response.Speak += card.Subtitle != null ? $"{card.Subtitle} " : string.Empty;
-            response.Speak += card.Text != null ? $"{card.Text} " : string.Empty;
+                response.Text = answer;
+            }
 
             return response;
         }
