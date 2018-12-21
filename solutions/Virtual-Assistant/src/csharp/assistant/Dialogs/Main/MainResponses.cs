@@ -54,6 +54,10 @@ namespace VirtualAssistant
                     ResponseIds.Intro,
                     (context, data) => BuildIntroCard(context, data)
                 },
+                {
+                    ResponseIds.Qna,
+                    (context, data) => BuildQnaCard(context, data)
+                }
             }
         };
 
@@ -95,6 +99,32 @@ namespace VirtualAssistant
             return response;
         }
 
+        public static IMessageActivity BuildQnaCard(ITurnContext turnContext, dynamic answer)
+        {
+            var response = turnContext.Activity.CreateReply();
+
+            try
+            {
+                ThumbnailCard card = JsonConvert.DeserializeObject<ThumbnailCard>(answer);
+
+                response.Attachments = new List<Attachment>
+                {
+                    card.ToAttachment(),
+                };
+
+                response.Speak = card.Title != null ? $"{card.Title} " : string.Empty;
+                response.Speak += card.Subtitle != null ? $"{card.Subtitle} " : string.Empty;
+                response.Speak += card.Text != null ? $"{card.Text} " : string.Empty;
+            }
+            catch (JsonException)
+            {
+                response.Text = answer;
+            }
+
+            return response;
+        }
+
+
         public class ResponseIds
         {
             public const string Cancelled = "cancelled";
@@ -104,6 +134,7 @@ namespace VirtualAssistant
             public const string Greeting = "greeting";
             public const string Help = "help";
             public const string Intro = "intro";
+            public const string Qna = "qna";
             public const string Error = "error";
             public const string NoActiveDialog = "noActiveDialog";
         }
