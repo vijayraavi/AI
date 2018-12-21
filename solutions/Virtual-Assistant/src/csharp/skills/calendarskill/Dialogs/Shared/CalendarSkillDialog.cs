@@ -129,7 +129,7 @@ namespace CalendarSkill
                 // When the token is cached we get a TokenResponse object.
                 var skillOptions = (CalendarSkillDialogOptions)sc.Options;
                 ProviderTokenResponse providerTokenResponse;
-                if (skillOptions.SkillMode)
+                if (skillOptions != null && skillOptions.SkillMode)
                 {
                     var resultType = sc.Context.Activity.Value.GetType();
                     if (resultType == typeof(ProviderTokenResponse))
@@ -455,13 +455,16 @@ namespace CalendarSkill
                     case Calendar.Intent.FindMeetingRoom:
                     case Calendar.Intent.CreateCalendarEntry:
                         {
+                            state.CreateHasDetail = false;
                             if (entity.Subject != null)
                             {
+                                state.CreateHasDetail = true;
                                 state.Title = GetSubjectFromEntity(entity);
                             }
 
                             if (entity.ContactName != null)
                             {
+                                state.CreateHasDetail = true;
                                 state.AttendeesNameList = GetAttendeesFromEntity(entity, luisResult.Text, state.AttendeesNameList);
                             }
 
@@ -471,12 +474,14 @@ namespace CalendarSkill
                                 var date = GetTimeFromDateTimeString(dateString, dc.Context.Activity.Locale, state.GetUserTimeZone(), true);
                                 if (date != null)
                                 {
+                                    state.CreateHasDetail = true;
                                     state.StartDate = date;
                                 }
 
                                 date = GetTimeFromDateTimeString(dateString, dc.Context.Activity.Locale, state.GetUserTimeZone(), false);
                                 if (date != null)
                                 {
+                                    state.CreateHasDetail = true;
                                     state.EndDate = date;
                                 }
                             }
@@ -487,6 +492,7 @@ namespace CalendarSkill
                                 var date = GetDateFromDateTimeString(dateString, dc.Context.Activity.Locale, state.GetUserTimeZone());
                                 if (date != null)
                                 {
+                                    state.CreateHasDetail = true;
                                     state.EndDate = date;
                                 }
                             }
@@ -497,12 +503,14 @@ namespace CalendarSkill
                                 var time = GetTimeFromDateTimeString(timeString, dc.Context.Activity.Locale, state.GetUserTimeZone(), true);
                                 if (time != null)
                                 {
+                                    state.CreateHasDetail = true;
                                     state.StartTime = time;
                                 }
 
                                 time = GetTimeFromDateTimeString(timeString, dc.Context.Activity.Locale, state.GetUserTimeZone(), false);
                                 if (time != null)
                                 {
+                                    state.CreateHasDetail = true;
                                     state.EndTime = time;
                                 }
                             }
@@ -513,6 +521,7 @@ namespace CalendarSkill
                                 var time = GetTimeFromDateTimeString(timeString, dc.Context.Activity.Locale, state.GetUserTimeZone());
                                 if (time != null)
                                 {
+                                    state.CreateHasDetail = true;
                                     state.EndTime = time;
                                 }
                             }
@@ -522,17 +531,20 @@ namespace CalendarSkill
                                 int duration = GetDurationFromEntity(entity, dc.Context.Activity.Locale);
                                 if (duration != -1)
                                 {
+                                    state.CreateHasDetail = true;
                                     state.Duration = duration;
                                 }
                             }
 
                             if (entity.MeetingRoom != null)
                             {
+                                state.CreateHasDetail = true;
                                 state.Location = GetMeetingRoomFromEntity(entity);
                             }
 
                             if (entity.Location != null)
                             {
+                                state.CreateHasDetail = true;
                                 state.Location = GetLocationFromEntity(entity);
                             }
 
@@ -576,16 +588,6 @@ namespace CalendarSkill
                                 {
                                     state.EndTime = time;
                                 }
-                            }
-
-                            break;
-                        }
-
-                    case Calendar.Intent.NextMeeting:
-                        {
-                            if (entity.AskParameter != null)
-                            {
-                                state.AskParameterContent = GetAskParameterFromEntity(entity);
                             }
 
                             break;
@@ -681,8 +683,12 @@ namespace CalendarSkill
                         }
 
                     case Calendar.Intent.FindCalendarEntry:
-                    case Calendar.Intent.Summary:
                         {
+                            if (entity.OrderReference != null)
+                            {
+                                state.OrderReference = GetOrderReferenceFromEntity(entity);
+                            }
+
                             if (entity.FromDate != null)
                             {
                                 var dateString = GetDateTimeStringFromInstanceData(luisResult.Text, entity._instance.FromDate[0]);
@@ -733,6 +739,11 @@ namespace CalendarSkill
                                 {
                                     state.EndTime = time;
                                 }
+                            }
+
+                            if (entity.AskParameter != null)
+                            {
+                                state.AskParameterContent = GetAskParameterFromEntity(entity);
                             }
 
                             break;
@@ -789,7 +800,7 @@ namespace CalendarSkill
 
                             if (entity.OrderReference != null)
                             {
-                                state.OrderReference = entity._instance.OrderReference[0].Text;
+                                state.OrderReference = GetOrderReferenceFromEntity(entity);
                             }
 
                             if (entity.Subject != null)
@@ -1092,6 +1103,11 @@ namespace CalendarSkill
             }
 
             return dateTimeResults;
+        }
+
+        private string GetOrderReferenceFromEntity(Calendar._Entities entity)
+        {
+            return entity.OrderReference[0];
         }
     }
 }

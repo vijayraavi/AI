@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using AdaptiveCards;
@@ -8,6 +9,8 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.TemplateManager;
 using Microsoft.Bot.Schema;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 using VirtualAssistant.Dialogs.Main.Resources;
 
 namespace VirtualAssistant
@@ -56,8 +59,8 @@ namespace VirtualAssistant
                 },
                 {
                     ResponseIds.Qna,
-                    (context, data) => BuildQnaCard(context, data)
-                }
+                    (context, data) => BuildQnACard(context, data)
+                },
             }
         };
 
@@ -68,7 +71,7 @@ namespace VirtualAssistant
 
         public static IMessageActivity BuildIntroCard(ITurnContext turnContext, dynamic data)
         {
-            var introCard = File.ReadAllText(@".\Dialogs\Main\Resources\Intro.json");
+            var introCard = File.ReadAllText(MainStrings.INTRO_PATH);
             var card = AdaptiveCard.FromJson(introCard).Card;
             var attachment = new Attachment(AdaptiveCard.ContentType, content: card);
 
@@ -99,7 +102,7 @@ namespace VirtualAssistant
             return response;
         }
 
-        public static IMessageActivity BuildQnaCard(ITurnContext turnContext, dynamic answer)
+        public static IMessageActivity BuildQnACard(ITurnContext turnContext, dynamic answer)
         {
             var response = turnContext.Activity.CreateReply();
 
@@ -123,7 +126,6 @@ namespace VirtualAssistant
 
             return response;
         }
-
 
         public class ResponseIds
         {
