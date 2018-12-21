@@ -95,6 +95,7 @@
 
   <ItemGroup>
     <Folder Include="Dialogs\Shared\Resources\" />
+    <Folder Include="LocaleConfigurations\" />
   </ItemGroup>
 
   <ItemGroup>
