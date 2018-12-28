@@ -30,13 +30,7 @@ namespace AutomotiveSkill.Dialogs.VehicleSettings.Resources
 
         public static BotResponse VehicleSettingsSettingValueSelection => GetBotResponse();
 
-        public static BotResponse VehicleSettingsSettingValueSelectionPre => GetBotResponse();
-
-        public static BotResponse VehicleSettingsSettingValueSelectionPost => GetBotResponse();
-
         public static BotResponse VehicleSettingsSettingChangeConfirmation => GetBotResponse();
-
-        public static BotResponse VehicleSettingsSettingChangeConfirmationWithCategory => GetBotResponse();
 
         public static BotResponse VehicleSettingsSettingChangeConfirmationDenied => GetBotResponse();
 
