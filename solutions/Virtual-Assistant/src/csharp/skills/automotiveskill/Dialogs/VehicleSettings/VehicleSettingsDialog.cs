@@ -26,7 +26,6 @@ namespace AutomotiveSkill
 {
     public class VehicleSettingsDialog : AutomotiveSkillDialog
     {
-        private static readonly Regex WordRequiresAn = new Regex("^([aio]|e(?!u)|u(?![^aeoiu])).*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex WordCharacter = new Regex("^\\w", RegexOptions.Compiled);
         private static readonly IReadOnlyDictionary<string, string> SettingValueToSpeakableIngForm = new Dictionary<string, string>
         {
@@ -172,15 +171,17 @@ namespace AutomotiveSkill
                             options.Choices.Add(choice);
                         }
 
+                        options.Prompt = sc.Context.Activity.CreateReply(VehicleSettingsResponses.VehicleSettingsSettingNameSelection);
+
                         var card = new HeroCard
                         {
                             Images = new List<CardImage> { new CardImage(GetSettingCardImageUri("settingcog.jpg")) },
-                            Text = "Please choose from one of the available settings shown below",
+                            Text = options.Prompt.Text,
                             Buttons = options.Choices.Select(choice =>
                                 new CardAction(ActionTypes.ImBack, choice.Value, value: choice.Value)).ToList(),
                         };
 
-                        options.Prompt = (Activity)MessageFactory.Attachment(card.ToAttachment());
+                        options.Prompt.Attachments.Add(card.ToAttachment());
 
                         return await sc.PromptAsync(Actions.SettingNameSelectionPrompt, options);
                     }
@@ -257,7 +258,7 @@ namespace AutomotiveSkill
                 if (!settingValues.Any())
                 {
                     // This shouldn't happen because the SettingFilter would just add all possible values to let the user select from them.
-                    await sc.Context.SendActivityAsync(sc.Context.Activity.CreateReply(VehicleSettingsResponses.VehicleSettingsOutOfDomain));
+                    await sc.Context.SendActivityAsync(sc.Context.Activity.CreateReply(VehicleSettingsResponses.VehicleSettingsMissingSettingValue));
                     return await sc.EndDialogAsync();
                 }
                 else
@@ -267,7 +268,7 @@ namespace AutomotiveSkill
                     {
                         string settingName = state.Changes.First().SettingName;
 
-                        // If we have more than one setting name matching prompt the user to choose
+                        // If we have more than one setting value matching prompt the user to choose
                         var options = new PromptOptions()
                         {
                             Choices = new List<Choice>(),
@@ -284,7 +285,7 @@ namespace AutomotiveSkill
                             options.Choices.Add(choice);
                         }
 
-                        BotResponse promptTemplate = VehicleSettingsResponses.VehicleSettingsSettingValueSelectionPre;
+                        BotResponse promptTemplate = VehicleSettingsResponses.VehicleSettingsSettingValueSelection;
                         var promptReplacements = new StringDictionary { { "settingName", settingName } };
                         options.Prompt = sc.Context.Activity.CreateReply(promptTemplate, ResponseBuilder, promptReplacements);
 
@@ -377,20 +378,6 @@ namespace AutomotiveSkill
                                     { "settingName", change.SettingName },
                                     { "value", change.Value },
                         };
-
-                        if (availableSetting != null && availableSetting.Categories != null && availableSetting.Categories.Any())
-                        {
-                            promptTemplate = VehicleSettingsResponses.VehicleSettingsSettingChangeConfirmationWithCategory;
-                            promptReplacements.Add("category", availableSetting.Categories[0]);
-                            if (WordRequiresAn.Match(promptReplacements["category"]).Success)
-                            {
-                                promptReplacements.Add("aOrAnBeforeCategory", "an");
-                            }
-                            else
-                            {
-                                promptReplacements.Add("aOrAnBeforeCategory", "a");
-                            }
-                        }
 
                         // TODO - Explore moving to ConfirmPrompt following usability testing
                         var prompt = sc.Context.Activity.CreateReply(promptTemplate, ResponseBuilder, promptReplacements);
