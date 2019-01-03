@@ -19,10 +19,10 @@
 
   <ItemGroup>
     <None Remove="Dialogs\VehicleSettings\Resources\available_settings.yaml" />
-    <None Remove="Dialogs\VehicleSettings\Resources\Normalization\amount_percentage.tsv" />
-    <None Remove="Dialogs\VehicleSettings\Resources\Normalization\amount_type.tsv" />
-    <None Remove="Dialogs\VehicleSettings\Resources\Normalization\amount_unit.tsv" />
-    <None Remove="Dialogs\VehicleSettings\Resources\Normalization\index_map.tsv" />
+    <None Remove="Dialogs\VehicleSettings\Resources\normalization\amount_percentage.tsv" />
+    <None Remove="Dialogs\VehicleSettings\Resources\normalization\amount_type.tsv" />
+    <None Remove="Dialogs\VehicleSettings\Resources\normalization\amount_unit.tsv" />
+    <None Remove="Dialogs\VehicleSettings\Resources\normalization\index_map.tsv" />
     <None Remove="Dialogs\VehicleSettings\Resources\setting_alternative_names.yaml" />
   </ItemGroup>
 
@@ -30,16 +30,16 @@
     <Content Include="Dialogs\VehicleSettings\Resources\available_settings.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Dialogs\VehicleSettings\Resources\Normalization\amount_percentage.tsv">
+    <Content Include="Dialogs\VehicleSettings\Resources\normalization\amount_percentage.tsv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Dialogs\VehicleSettings\Resources\Normalization\amount_type.tsv">
+    <Content Include="Dialogs\VehicleSettings\Resources\normalization\amount_type.tsv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Dialogs\VehicleSettings\Resources\Normalization\amount_unit.tsv">
+    <Content Include="Dialogs\VehicleSettings\Resources\normalization\amount_unit.tsv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Dialogs\VehicleSettings\Resources\Normalization\index_map.tsv">
+    <Content Include="Dialogs\VehicleSettings\Resources\normalization\index_map.tsv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Dialogs\VehicleSettings\Resources\setting_alternative_names.yaml">
