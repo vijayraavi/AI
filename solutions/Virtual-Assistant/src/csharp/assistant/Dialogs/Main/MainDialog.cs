@@ -238,7 +238,7 @@ namespace VirtualAssistant
                 currentLocation.Lng = 120.740552;
             }
 
-            if (command.Contains("播放"))
+            if (command.Contains("播放") || command.Contains("play", StringComparison.InvariantCultureIgnoreCase))
             {
                 NetEaseMusicClient client = new NetEaseMusicClient();
                 List<Song> list_Song = await client.SearchSongAsync(command).ConfigureAwait(false);
