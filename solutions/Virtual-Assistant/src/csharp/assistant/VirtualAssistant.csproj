@@ -106,6 +106,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="peloton">
+      <HintPath>..\skills\pelotonskill\peloton\bin\Debug\netcoreapp2.1\peloton.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="*.bot">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

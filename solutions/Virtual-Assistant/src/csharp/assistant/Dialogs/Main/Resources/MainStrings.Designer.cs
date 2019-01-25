@@ -79,7 +79,7 @@ namespace VirtualAssistant.Dialogs.Main.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to What else can I help you with?.
+        ///   Looks up a localized string similar to All done! I&apos;m here for you if you need anything else..
         /// </summary>
         public static string COMPLETED {
             get {
@@ -155,17 +155,18 @@ namespace VirtualAssistant.Dialogs.Main.Resources {
         ///  &quot;$schema&quot;: &quot;http://adaptivecards.io/schemas/adaptive-card.json&quot;,
         ///  &quot;type&quot;: &quot;AdaptiveCard&quot;,
         ///  &quot;version&quot;: &quot;1.0&quot;,
-        ///  &quot;speak&quot;: &quot;Welcome to your Virtual Assistant! Now that you&apos;re up and running, let&apos;s get started.&quot;,
+        ///  &quot;speak&quot;: &quot;Welcome to your Peloton Assistant! Now that you&apos;re up and running, let&apos;s get started.&quot;,
         ///  &quot;body&quot;: [
         ///    {
         ///      &quot;type&quot;: &quot;Image&quot;,
-        ///      &quot;url&quot;: &quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtB3AwMUeNoq4gUBGe6Ocj8kyh3bXa9ZbV7u1fVKQoyKFHdkqU&quot;,
+        ///      &quot;url&quot;: &quot;https://upload.wikimedia.org/wikipedia/en/3/36/Peloton_%28company%29_logo.svg&quot;,
         ///      &quot;size&quot;: &quot;stretch&quot;
         ///    },
         ///    {
         ///      &quot;type&quot;: &quot;TextBlock&quot;,
         ///      &quot;spacing&quot;: &quot;medium&quot;,
         ///      &quot;size&quot;: &quot;default&quot;,
+        ///      &quot;weight&quot;: &quot;bolder&quot;,
         ///     [rest of string was truncated]&quot;;.
         /// </summary>
         public static string Intro {

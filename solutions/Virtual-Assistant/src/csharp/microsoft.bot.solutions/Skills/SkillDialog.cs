@@ -121,7 +121,7 @@ namespace Microsoft.Bot.Solutions.Skills
                 // Create skill instance
                 try
                 {
-                    var skillType = Type.GetType(_skillDefinition.Assembly);
+                     var skillType = Type.GetType(_skillDefinition.Assembly);
                     _activatedSkill = (IBot)Activator.CreateInstance(skillType, _skillConfiguration, conversationState, userState, _telemetryClient, null, true);
                 }
                 catch (Exception e)
@@ -246,8 +246,10 @@ namespace Microsoft.Bot.Solutions.Skills
                     }
                 }
 
+
+                //endOfConversation = true;
                 // handle ending the skill conversation
-                if (endOfConversation)
+                if (innerDc.Context.Responded)
                 {
                     await innerDc.Context.SendActivityAsync(new Activity(type: ActivityTypes.Trace, text: $"<--Ending the skill conversation"));
 

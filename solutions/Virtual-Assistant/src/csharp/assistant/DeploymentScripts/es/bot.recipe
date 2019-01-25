@@ -32,6 +32,12 @@
       "luPath": "..\\..\\skills\\pointofinterestskill\\pointofinterestskill\\CognitiveModels\\LUIS\\es\\pointofinterest.lu"
     },
     {
+      "type": "luis",
+      "id": "peloton",
+      "name": "peloton",
+      "luPath": "..\\..\\skills\\pelotonskill\\peloton\\CognitiveModels\\LUIS\\es\\peloton.lu"
+    },
+    {
       "type": "qna",
       "id": "faq",
       "name": "FAQ",

@@ -124,7 +124,7 @@
     <value>Ok, let's start over.</value>
   </data>
   <data name="COMPLETED" xml:space="preserve">
-    <value>What else can I help you with?</value>
+    <value>All done! I'm here for you if you need anything else.</value>
   </data>
   <data name="CONFUSED" xml:space="preserve">
     <value>I'm sorry, I'm not able to help with that.</value>

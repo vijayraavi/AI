@@ -1,0 +1,1 @@
+az bot publish --resource-group pelotonva -n pelotonva --subscription ea43171e-9efb-45f6-b54a-308e5dd706bc -v v4 --proj-name "VirtualAssistant.csproj" 

@@ -2,11 +2,11 @@
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
-  "speak": "Welcome to your Virtual Assistant! Now that you're up and running, let's get started.",
+  "speak": "Welcome to your Peloton Assistant! Now that you're up and running, let's get started.",
   "body": [
     {
       "type": "Image",
-      "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtB3AwMUeNoq4gUBGe6Ocj8kyh3bXa9ZbV7u1fVKQoyKFHdkqU",
+      "url": "https://upload.wikimedia.org/wikipedia/en/3/36/Peloton_%28company%29_logo.svg",
       "size": "stretch"
     },
     {
@@ -14,8 +14,8 @@
       "spacing": "medium",
       "size": "default",
       "weight": "bolder",
-      "text": "Welcome to **your** Virtual Assistant!",
-      "speak": "Welcome to your Virtual Assistant",
+      "text": "Welcome to the Peloton Assistant!",
+      "speak": "Welcome to the Peloton Assistant",
       "wrap": true,
       "maxLines": 0
     },

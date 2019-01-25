@@ -165,6 +165,7 @@ namespace VirtualAssistant.Dialogs.Main
                 case Dispatch.Intent.l_Email:
                 case Dispatch.Intent.l_ToDo:
                 case Dispatch.Intent.l_PointOfInterest:
+                case Dispatch.Intent.l_peloton:
                     {
                         virtualAssistantState.LastIntent = intent.ToString();
                         var matchedSkill = _skillRouter.IdentifyRegisteredSkill(intent.ToString());
@@ -190,7 +191,7 @@ namespace VirtualAssistant.Dialogs.Main
                         break;
                     }
 
-                case Dispatch.Intent.None:
+                default:
                     {
                         // No intent was identified, send confused message
                         await _responder.ReplyWith(dc.Context, MainResponses.ResponseIds.Confused);

@@ -61,5 +61,14 @@ $TaskContentPattern:simple
 $KEYWORD:simple
 $ADDRESS:simple
 
+# l_peloton
+- [l_peloton](../../../../skills/pelotonskill/peloton/CognitiveModels/LUIS/en/peloton.lu#bootcamp)
+- [l_peloton](../../../../skills/pelotonskill/peloton/CognitiveModels/LUIS/en/peloton.lu#Incline)
+- [l_peloton](../../../../skills/pelotonskill/peloton/CognitiveModels/LUIS/en/peloton.lu#Speed)
+- [l_peloton](../../../../skills/pelotonskill/peloton/CognitiveModels/LUIS/en/peloton.lu#ChangeChannel)
+- [l_peloton](../../../../skills/pelotonskill/peloton/CognitiveModels/LUIS/en/peloton.lu#ShowGuide)
+- [l_peloton](../../../../skills/pelotonskill/peloton/CognitiveModels/LUIS/en/peloton.lu#WatchTV)
+- [l_peloton](../../../../skills/pelotonskill/peloton/CognitiveModels/LUIS/en/peloton.lu#workout)
+
 # q_FAQ
 - [q_FAQ](../../QnA/en/faq.lu#?)
