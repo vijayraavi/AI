@@ -1,0 +1,22 @@
+{
+  "SkipPhrases": [
+    "Skip",
+    "skip",
+    "no",
+    "No"
+  ],
+  "DefaultTitle": [
+    "Meeting"
+  ],
+  "ContactSeparator": [
+    ",",
+    "and",
+    ";"
+  ],
+  "Myself": [
+    "me",
+    "Me",
+    "myself",
+    "Myself"
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "LatestOneTask": {
+    "replies": [
+      {
+        "text": "Your most recent task is",
+        "speak": "Your most recent task is"
+      }
+    ],
+    "inputHint": "ignoringInput"
+  },
+  "LatestTwoTasks": {
+    "replies": [
+      {
+        "text": "Your most recent tasks are",
+        "speak": "Your most recent tasks are"
+      }
+    ],
+    "inputHint": "ignoringInput"
+  },
+  "LatestThreeOrMoreTasks": {
+    "replies": [
+      {
+        "text": "Your most recent {taskCount} tasks are",
+        "speak": "Your most recent {taskCount} tasks are"
+      }
+    ],
+    "inputHint": "ignoringInput"
+  },
+  "AskAddOrCompleteTaskMessage": {
+    "replies": [
+      {
+        "text": "You can let me know if you want to add or complete a task.",
+        "speak": "You can let me know if you want to add or complete a task."
+      }
+    ],
+    "inputHint": "ignoringInput"
+  },
+  "ReadMoreTasksPrompt": {
+    "replies": [
+      {
+        "text": "Do you want to hear more from your list?",
+        "speak": "Do you want to hear more from your list?"
+      }
+    ],
+    "inputHint": "expectingInput"
+  },
+  "NextOneTask": {
+    "replies": [
+      {
+        "text": "The next task is",
+        "speak": "The next task is"
+      }
+    ],
+    "inputHint": "ignoringInput"
+  },
+  "NextTwoTasks": {
+    "replies": [
+      {
+        "text": "The next tasks are",
+        "speak": "The next tasks are"
+      }
+    ],
+    "inputHint": "ignoringInput"
+  },
+  "NextThreeOrMoreTask": {
+    "replies": [
+      {
+        "text": "The next {taskCount} tasks are",
+        "speak": "The next {taskCount} tasks are"
+      }
+    ],
+    "inputHint": "ignoringInput"
+  },
+  "ShowPreviousTasks": {
+    "replies": [
+      {
+        "text": "The previous tasks are",
+        "speak": "The previous tasks are"
+      }
+    ],
+    "inputHint": "ignoringInput"
+  },
+  "NoTasksMessage": {
+    "replies": [
+      {
+        "text": "It seems you have no tasks in your {listType} list. Just let me know if you want to create a new task.",
+        "speak": "It seems you have no tasks in your {listType} list. Just let me know if you want to create a new task."
+      }
+    ],
+    "inputHint": "acceptingInput"
+  },
+  "InstructionMessage": {
+    "replies": [
+      {
+        "text": "Alright. If you want to set up a new to do, just ask me to create a new task. You can also ask me to complete or delete a task on your list.",
+        "speak": "Alright. If you want to set up a new to do, just ask me to create a new task. You can also ask me to complete or delete a task on your list."
+      }
+    ],
+    "inputHint": "acceptingInput"
+  },
+  "TaskSummaryMessage": {
+    "replies": [
+      {
+        "text": "You have {taskCount} tasks on your {listType} list today.",
+        "speak": "You have {taskCount} tasks on your {listType} list today."
+      }
+    ],
+    "inputHint": "ignoringInput"
+  }
+}
